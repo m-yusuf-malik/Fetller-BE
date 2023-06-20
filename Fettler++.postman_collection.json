@@ -1,0 +1,753 @@
+{
+	"info": {
+		"_postman_id": "0fe7b970-e93c-4cd5-a443-31dad55a3c33",
+		"name": "Fettler++",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"yu2111suf\",\r\n    \"email\": \"yu2s11uf@fettler.com\",\r\n    \"password\": \"1234\",\r\n    \"phone\": \"04712941241\",\r\n    \"country\": \"Norway\"\r\n}\r\n\r\n// {\r\n//     \"username\": \"plato\",\r\n//     \"email\": \"plato@fettler.com\",\r\n//     \"password\": \"1234\",\r\n//     \"phone\": \"01712941241\",\r\n//     \"country\": \"France\"\r\n// }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/register",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"yusuf@fettler.com\",\r\n    \"password\": \"1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/login",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "refresh",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY5NDkzNDY2MSwiaWF0IjoxNjg3MTU4NjYxLCJqdGkiOiJiYzc5MTFkODk3NjI0ZjkyOTQ4NTViZGZlOWE3NDhhYiIsInVzZXJfaWQiOjIsInVzZXJuYW1lIjoieXVzdWYifQ.uR-Tg-h75BHq_bnnvvnsGl5hGrWKdH4TjKtqc1q8NxU",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/token/refresh",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"token",
+						"refresh"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/users/yusuf",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"users",
+						"yusuf"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Muhammad Yusuf",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/users/yusuf",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"users",
+						"yusuf"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "Amino Nutrient",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "A low potency formula conatining many good things :)",
+							"type": "text"
+						},
+						{
+							"key": "address",
+							"value": "House # 12, Street # 34",
+							"type": "text"
+						},
+						{
+							"key": "country",
+							"value": "France",
+							"type": "text"
+						},
+						{
+							"key": "city",
+							"value": "Paris",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "1200",
+							"type": "text"
+						},
+						{
+							"key": "user",
+							"value": "yusuf",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "phone_number",
+							"value": "0478921202",
+							"type": "text"
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/C:/Users/Afief Raza/Downloads/images.jpeg"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/requests",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"requests"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/requests?ordering=-price&country=France",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"requests"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "QW",
+							"disabled": true
+						},
+						{
+							"key": "ordering",
+							"value": "-price"
+						},
+						{
+							"key": "country",
+							"value": "France"
+						}
+					]
+				},
+				"description": "ordering=price\n// will order the request in descending price. For ascending, do:\nordering=-price"
+			},
+			"response": []
+		},
+		{
+			"name": "Request Detail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/requests/12",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"requests",
+						"12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Request",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "VITA-FIT Sinus Nutrient",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "description",
+							"value": "Sinus is a hgh potency formula conatining many good things :)",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "address",
+							"value": "House # 4, Street # 90",
+							"type": "text"
+						},
+						{
+							"key": "country",
+							"value": "Norway",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "city",
+							"value": "Oslo",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "price",
+							"value": "120",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "user",
+							"value": "yusuf",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "phone_number",
+							"value": "0478921202",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/C:/Users/Afief Raza/Downloads/dog_bark.png",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/requests/12",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"requests",
+						"12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Request",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "VITA-FIT Sinus Nutrient",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "description",
+							"value": "Sinus is a hgh potency formula conatining many good things :)",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "address",
+							"value": "House # 4, Street # 4",
+							"type": "text"
+						},
+						{
+							"key": "country",
+							"value": "Norway",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "city",
+							"value": "Oslo",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "price",
+							"value": "120",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "user",
+							"value": "yusuf",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "phone_number",
+							"value": "0478921202",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/C:/Users/Afief Raza/Downloads/dog_bark.png",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/requests/8",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"requests",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "request",
+							"value": "8",
+							"type": "default",
+							"disabled": true
+						},
+						{
+							"key": "status",
+							"value": "0",
+							"type": "default",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/requests/9/order",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"requests",
+						"9",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Order",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "request",
+							"value": "8",
+							"type": "default"
+						},
+						{
+							"key": "status",
+							"value": "1",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/requests/3/order",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"requests",
+						"3",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Order",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "request",
+							"value": "8",
+							"type": "default",
+							"disabled": true
+						},
+						{
+							"key": "status",
+							"value": "2",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/requests/8/order",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"requests",
+						"8",
+						"order"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Order",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "request",
+							"value": "8",
+							"type": "default",
+							"disabled": true
+						},
+						{
+							"key": "status",
+							"value": "2",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/requests/8/order",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"requests",
+						"8",
+						"order"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Batch",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/users/yusuf/batch",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"users",
+						"yusuf",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Batch",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "request",
+							"value": "8",
+							"type": "default",
+							"disabled": true
+						},
+						{
+							"key": "batch_name",
+							"value": "0",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/users/yusuf/batch",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"users",
+						"yusuf",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg3MjM0ODY0LCJpYXQiOjE2ODcxNTg2NjEsImp0aSI6ImQyY2RmZmQ4YjNmMDRjMGU4YjRjNzM3MDJlNDZjZjljIiwidXNlcl9pZCI6MiwidXNlcm5hbWUiOiJ5dXN1ZiJ9.fdyPqdZJ_hjbn67fhD4oEPyPIbzcfvgzfUhFiO4eloE",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
