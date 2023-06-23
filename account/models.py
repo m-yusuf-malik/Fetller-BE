@@ -19,6 +19,7 @@ class EndUserManager(BaseUserManager):
         )
 
         user.set_password(password)
+        print(user.password)
         user.save(using=self._db)
         return user
 
@@ -27,7 +28,6 @@ class EndUserManager(BaseUserManager):
         Creates and saves a superuser with the given email, date of
         birth and password.
         """
-        print(password)
         user = self.create_user(
             email=self.normalize_email(email),
             phone=phone,
@@ -82,6 +82,7 @@ class EndUser(AbstractBaseUser):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
+        
 
 
 class Batch(models.Model):

@@ -11,6 +11,8 @@ class TokenSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
 
         token['username'] = user.username
+        token['is_rider'] = user.is_rider
+        token['name'] = user.name
 
         return token
 
@@ -36,13 +38,13 @@ class RegisterSerializer(ModelSerializer):
             'batch'
         )
 
-    def validate(self, attrs):
-        return attrs
 
     def create(self, validated_data):
-        # Create the User instance
+        password = validated_data.pop('password')
         user = super().create(validated_data)
-        print(user)
+        user.set_password(password)
+        user.save()
+
         batch_data = {
             'batch_name': 1,
             'user': user.pk,
@@ -52,9 +54,8 @@ class RegisterSerializer(ModelSerializer):
         batch_serializer.is_valid(raise_exception=True)
         batch_serializer.save()
 
-        print(batch_serializer.data)
-
         return user
+    
 
 
 class EndUserSerializer(serializers.ModelSerializer):
