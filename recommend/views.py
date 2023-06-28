@@ -1,5 +1,6 @@
 import numpy as np
 from PIL import Image
+import cv2 as cv
 
 from django.core.cache import cache
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -25,7 +26,8 @@ class RecommenderAPIView(APIView):
                 uploaded_image = serializer.validated_data['image']
                 pil_image = Image.open(uploaded_image)
                 image_array = np.array(pil_image)
-                body_type, body_model = calculate_body_type(image_array)
+                res_img = np.resize(image_array, (640, 640))
+                body_type, body_model = calculate_body_type(res_img)
                 
                 return Response({'body_type': body_type, 'body_model':body_model}, status=status.HTTP_200_OK)
             else:

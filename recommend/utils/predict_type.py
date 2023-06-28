@@ -74,6 +74,7 @@ def calculate_body_type(img):
     # reading the reference image from dir
     # Shape (3, 640, 640)
     # img = cv.imread(img_path)
+    img = img.resize((640, 640))
 
     data = object_detector(img)
 
