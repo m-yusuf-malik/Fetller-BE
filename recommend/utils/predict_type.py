@@ -22,10 +22,10 @@ def load_model():
     # Check if the model is already cached
     model = cache.get('model')
     if model is None:
+        print("hehre")
         # model_path = os.path.join(settings.BASE_DIR,'recommend','utils', 'assets', 'yolov8n.pt')
         # print(model_path)
-        model = YOLO('yolov8n.pt', task='detect')
-        # print(type(model))
+        model = YOLO('../assets/yolov8n.pt', task='detect')
 
         # Cache the model
         cache.set('model', model)
@@ -37,8 +37,8 @@ def load_model():
 # object detector funciton/method
 def object_detector(image):
     model = load_model()
-    results = model.predict(image, conf=CONFIDENCE_THRESHOLD, imgsz=(640, 640),
-                            iou=NMS_THRESHOLD, max_det=1, classes=0, save=True)[0]
+    results = model.predict(source=image, conf=CONFIDENCE_THRESHOLD, imgsz=(640, 640),
+                            iou=NMS_THRESHOLD, max_det=1, classes=0, save=False)[0]
 
     classes = results.boxes.cls.numpy().astype(dtype=np.int32)
     extras = results.boxes.xywh.numpy().astype(dtype=np.int32)

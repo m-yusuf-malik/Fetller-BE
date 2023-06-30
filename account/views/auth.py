@@ -32,13 +32,13 @@ class RegisterView(views.APIView):
                 data={
                     "Message": "Account created successfully!",
                 },
-                status=status.HTTP_201_CREATED
+                status=status.HTTP_201_CREATED,
             )
 
         except Exception as e:
             return response.Response(
                 data={
-                    'error': str(e),
+                    "error": ser.errors,
                 },
-                status=status.HTTP_404_NOT_FOUND
+                status=status.HTTP_404_NOT_FOUND,
             )

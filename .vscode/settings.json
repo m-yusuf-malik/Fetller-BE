@@ -1,6 +1,8 @@
 {
     "[python]": {
-        "editor.defaultFormatter": "ms-python.python"
+        "editor.defaultFormatter": "ms-python.black-formatter"
     },
-    "python.formatting.provider": "none"
+    "python.formatting.provider": "none",
+    "python.analysis.typeCheckingMode": "off",
+    "C_Cpp.default.compilerPath": ""
 }

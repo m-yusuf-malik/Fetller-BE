@@ -59,6 +59,8 @@ class EndUser(AbstractBaseUser):
     country = models.CharField(max_length=255)
     city = models.CharField(max_length=255, default='')
     destination_country = models.CharField(max_length=255, default='')
+    body_type = models.PositiveSmallIntegerField(blank=True, null=True)
+
     objects = EndUserManager()
 
     USERNAME_FIELD = "email"
