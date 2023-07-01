@@ -1,9 +1,7 @@
 from django.db.models import Q
 
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import (generics,
-                            response,
-                            status)
+from rest_framework import generics, response, status
 
 from account.renderers import UserRenderer
 
@@ -13,7 +11,7 @@ from requests.serializers import (
     RequestListCreateSerializer,
     OrderSerializer,
     OrderListSerializer,
-    OrderUpdateSerializer
+    OrderUpdateSerializer,
 )
 
 
@@ -28,10 +26,10 @@ class RequestListCreateView(generics.ListCreateAPIView):
         serializer.save(user=user)
 
     def filter_with_params(self, request, requests):
-        search = request.query_params.get('search')
-        ordering = request.query_params.get('ordering')
-        country = request.query_params.get('country')
-        city = request.query_params.get('city')
+        search = request.query_params.get("search")
+        ordering = request.query_params.get("ordering")
+        country = request.query_params.get("country")
+        city = request.query_params.get("city")
 
         if search:
             requests = requests.filter(
@@ -49,10 +47,13 @@ class RequestListCreateView(generics.ListCreateAPIView):
     def get(self, request):
         try:
             requests = self.get_queryset()
+            requests = requests.filter(is_ordered=False)
             requests = self.filter_with_params(request, requests)
 
             if not requests:
-                return response.Response("No requests found.", status=status.HTTP_204_NO_CONTENT)
+                return response.Response(
+                    "No requests found.", status=status.HTTP_204_NO_CONTENT
+                )
 
             ser = self.serializer_class(requests, many=True)
 
@@ -61,9 +62,9 @@ class RequestListCreateView(generics.ListCreateAPIView):
         except Exception as e:
             return response.Response(
                 data={
-                    'error': str(e),
+                    "error": ser.errors,
                 },
-                status=status.HTTP_404_NOT_FOUND
+                status=status.HTTP_404_NOT_FOUND,
             )
 
 
@@ -78,74 +79,75 @@ class RequestRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class OrderView(
-    generics.ListCreateAPIView,
-    generics.UpdateAPIView,
-    generics.DestroyAPIView
+    generics.ListCreateAPIView, generics.UpdateAPIView, generics.DestroyAPIView
 ):
     serializer_class = OrderSerializer
     queryset = Order.objects.all()
     renderer_classes = [UserRenderer]
-    lookup_url_kwarg = 'req_id'
-    lookup_field = 'request'
+    permission_classes = [IsAuthenticated]
+    lookup_url_kwarg = "req_id"
+    lookup_field = "request"
 
     def get_queryset(self):
-        req_id = self.kwargs['req_id']
+        req_id = self.kwargs["req_id"]
         order = Order.objects.filter(request__id=req_id)
         return order
 
     def get_serializer_class(self):
-        if self.request.method == 'GET':
+        if self.request.method == "GET":
             return OrderListSerializer
-        elif self.request.method == 'POST':
+        elif self.request.method == "POST":
             return OrderSerializer
-        elif self.request.method == 'PATCH':
+        elif self.request.method == "PATCH":
             return OrderUpdateSerializer
 
     def post(self, req, req_id):
         try:
             request = Request.objects.get(id=req_id)
+            request.is_ordered = True
+
             rider = req.user
 
+            if rider == request.user:
+                return response.Response(
+                    data={"error": "You cannot take order of your own request."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
             data = {
-                'rider': rider.id,
-                'request': request.id,
-                'requestee': request.user.id,
-                'status': 0,
-                'score': int(request.estimated_profit*0.25),
+                "rider": rider.id,
+                "request": request.id,
+                "requestee": request.user.id,
+                "score": int(request.estimated_profit * 0.25),
             }
 
             ser = self.serializer_class(data=data)
             ser.is_valid(raise_exception=True)
             ser.save()
+            request.save()
+            rider.is_rider=True
+            rider.save()
 
             return response.Response(
                 data={
                     "Message": "Order created successfully!",
                 },
-                status=status.HTTP_201_CREATED
+                status=status.HTTP_201_CREATED,
             )
 
         except Request.DoesNotExist:
             return response.Response(
-                data={'error': 'Invalid request ID.'},
-                status=status.HTTP_400_BAD_REQUEST
+                data={"error": "Invalid request ID."},
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
         except EndUser.DoesNotExist:
             return response.Response(
-                data={'error': 'Invalid rider username.'},
-                status=status.HTTP_400_BAD_REQUEST
+                data={"error": "Invalid rider username."},
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
         except Exception as e:
             return response.Response(
-                data={'error': str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                data={"error": ser.errors}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-
-
-class OrderUpdateView(generics.UpdateAPIView):
-    serializer_class = OrderUpdateSerializer
-    queryset = Order.objects.all()
-    lookup_url_kwarg = 'username'
-    lookup_field = 'user__username'

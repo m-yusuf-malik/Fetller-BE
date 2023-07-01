@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "0fe7b970-e93c-4cd5-a443-31dad55a3c33",
+		"_postman_id": "38d5d5df-d037-4994-a5fd-bc63f802d2b3",
 		"name": "Fettler++",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28244622"
 	},
 	"item": [
 		{
@@ -15,7 +16,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"yu2111suf\",\r\n    \"email\": \"yu2s11uf@fettler.com\",\r\n    \"password\": \"1234\",\r\n    \"phone\": \"04712941241\",\r\n    \"country\": \"Norway\"\r\n}\r\n\r\n// {\r\n//     \"username\": \"plato\",\r\n//     \"email\": \"plato@fettler.com\",\r\n//     \"password\": \"1234\",\r\n//     \"phone\": \"01712941241\",\r\n//     \"country\": \"France\"\r\n// }",
+					"raw": "{\r\n    \"username\": \"yusuf\",\r\n    \"email\": \"yusuf@fettler.com\",\r\n    \"password\": \"1234\",\r\n    \"phone\": \"04712941241\",\r\n    \"country\": \"Norway\"\r\n}\r\n\r\n// {\r\n//     \"username\": \"plato\",\r\n//     \"email\": \"plato@fettler.com\",\r\n//     \"password\": \"1234\",\r\n//     \"phone\": \"01712941241\",\r\n//     \"country\": \"France\"\r\n// }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -23,15 +24,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/register",
-					"protocol": "http",
+					"raw": "{{DOMAIN}}/api/register",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{DOMAIN}}"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"register"
@@ -82,7 +78,7 @@
 					"formdata": [
 						{
 							"key": "refresh",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY5NDkzNDY2MSwiaWF0IjoxNjg3MTU4NjYxLCJqdGkiOiJiYzc5MTFkODk3NjI0ZjkyOTQ4NTViZGZlOWE3NDhhYiIsInVzZXJfaWQiOjIsInVzZXJuYW1lIjoieXVzdWYifQ.uR-Tg-h75BHq_bnnvvnsGl5hGrWKdH4TjKtqc1q8NxU",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY4ODI0NDczNywiaWF0IjoxNjg4MTU4MzM3LCJqdGkiOiI2N2ZjOTE0ZWUxNTI0ZTQ2OGUyMWQyZDFhZTA4YzNhNCIsInVzZXJfaWQiOjEsInVzZXJuYW1lIjoieXVzdWYiLCJpc19yaWRlciI6ZmFsc2UsIm5hbWUiOiIifQ.B4Vob-XgeMEV9a7UyZIHPAXCuLPGj684eOiezlQsi1c",
 							"type": "default"
 						}
 					]
@@ -290,7 +286,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/requests/12",
+					"raw": "http://127.0.0.1:8000/api/requests/7",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -302,7 +298,7 @@
 					"path": [
 						"api",
 						"requests",
-						"12"
+						"7"
 					]
 				}
 			},
@@ -718,6 +714,78 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Save Diets from excel",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DOMAIN}}/api/save-diets",
+					"host": [
+						"{{DOMAIN}}"
+					],
+					"path": [
+						"api",
+						"save-diets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Diet-Plan",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DOMAIN}}/api/diet-plan",
+					"host": [
+						"{{DOMAIN}}"
+					],
+					"path": [
+						"api",
+						"diet-plan"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Diet-Plan",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "{{DOMAIN}}/api/diet-plan",
+					"host": [
+						"{{DOMAIN}}"
+					],
+					"path": [
+						"api",
+						"diet-plan"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Diet-Plans",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DOMAIN}}/api/diet-plans",
+					"host": [
+						"{{DOMAIN}}"
+					],
+					"path": [
+						"api",
+						"diet-plans"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"auth": {
@@ -725,7 +793,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg3MjM0ODY0LCJpYXQiOjE2ODcxNTg2NjEsImp0aSI6ImQyY2RmZmQ4YjNmMDRjMGU4YjRjNzM3MDJlNDZjZjljIiwidXNlcl9pZCI6MiwidXNlcm5hbWUiOiJ5dXN1ZiJ9.fdyPqdZJ_hjbn67fhD4oEPyPIbzcfvgzfUhFiO4eloE",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg4MTY1NTUwLCJpYXQiOjE2ODgxNTgzMzcsImp0aSI6ImJkOWZhNWJkM2U3MTRmZDhhZmUxNDc1YThmMWMzYjFmIiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJ5dXN1ZiIsImlzX3JpZGVyIjpmYWxzZSwibmFtZSI6IiJ9.HbLGlMq0uvnrBq1_5u6hXDRmG8prZ8bVhg-bQIEU1_Y",
 				"type": "string"
 			}
 		]
@@ -748,6 +816,13 @@
 					""
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"key": "DOMAIN",
+			"value": "",
+			"type": "string"
 		}
 	]
 }

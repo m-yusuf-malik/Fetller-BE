@@ -1,13 +1,9 @@
+from django.utils import timezone
+
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 from account.models import EndUser
-
-# Create your models here.
-
-
-# class DietPlans(models.Model):
-#     pass
 
 
 class Schedule(models.Model):
@@ -16,6 +12,14 @@ class Schedule(models.Model):
         EndUser, on_delete=models.PROTECT, related_name="schedule"
     )
     critical_day = models.SmallIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if not self.pk:  # only set on creation
+            self.created_at =  timezone.localtime(timezone.now())
+            self.updated_at =  timezone.localtime(timezone.now())
+        super().save(*args, **kwargs)
 
 
 class DietPlan(models.Model):
