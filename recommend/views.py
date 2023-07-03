@@ -30,6 +30,13 @@ class RecommenderAPIView(APIView):
 
     def post(self, request, format=None):
         try:
+            user = request.user
+            if user.body_type:
+                return Response(
+                    {"error": "User already has a diet plan!"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
             serializer = RecommenderSerializer(data=request.data)
             if serializer.is_valid():
                 uploaded_image = serializer.validated_data["image"]
@@ -44,23 +51,15 @@ class RecommenderAPIView(APIView):
                         {"error": data.get("error")},
                         status=status.HTTP_400_BAD_REQUEST,
                     )
-                
+
                 # if "error" in data.keys():
                 #     return Response(
                 #         {"error": data.get("error")},
                 #         status=status.HTTP_400_BAD_REQUEST,
                 #     )
 
-
                 body_type, body_model = data
                 # print({"body_type": body_type, "body_model": body_model})
-
-                user = request.user
-                if user.body_type:
-                    return Response(
-                        {"error": "User already has a diet plan!"},
-                        status=status.HTTP_208_ALREADY_REPORTED,
-                    )
 
                 user.body_type = body_type
                 Schedule.objects.create(user=user)
@@ -82,6 +81,7 @@ class RecommenderAPIView(APIView):
             )
 
 
+# for showing and updating current diet-plan
 class ScheduleAPIVIew(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ScheduleSerializer
     permission_classes = [IsAuthenticated]
@@ -151,7 +151,9 @@ class ScheduleAPIVIew(generics.RetrieveUpdateDestroyAPIView):
                 user.save()
 
                 return Response(
-                    {"message": "Failed to complete the diet."},
+                    {
+                        "error": "More than 5 days not taking the diet. Failed to complete the diet."
+                    },
                     status=status.HTTP_205_RESET_CONTENT,
                 )
 

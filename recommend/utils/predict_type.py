@@ -120,4 +120,4 @@ def calculate_body_type(img):
     elif body_model >= 300 and body_model < 400:
         body_type = 5  # obeseity (very overweight)
 
-    return body_type, body_model
+    return {"body_type": body_type, "body_model": body_model}
