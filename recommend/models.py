@@ -11,7 +11,7 @@ class Schedule(models.Model):
     user = models.OneToOneField(
         EndUser, on_delete=models.PROTECT, related_name="schedule"
     )
-    critical_day = models.SmallIntegerField(default=0)
+    critical_day = models.PositiveSmallIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 

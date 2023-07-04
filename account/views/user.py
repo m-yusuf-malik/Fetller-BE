@@ -19,6 +19,7 @@ class BatchView(generics.RetrieveUpdateAPIView):
     queryset = Batch.objects.all()
     lookup_url_kwarg = 'username'
     lookup_field = 'user__username'
+    permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
         if self.request.method == 'GET':

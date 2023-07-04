@@ -48,7 +48,7 @@ class EndUser(AbstractBaseUser):
         unique=True,
     )
     username = models.CharField(unique=True, max_length=255)
-    name = models.CharField(max_length=255, default='')
+    name = models.CharField(max_length=255, default='', blank=True)
     phone = models.CharField(max_length=15)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
@@ -57,8 +57,8 @@ class EndUser(AbstractBaseUser):
     score = models.IntegerField(default=0)
     is_rider = models.BooleanField(default=False)
     country = models.CharField(max_length=255)
-    city = models.CharField(max_length=255, default='')
-    destination_country = models.CharField(max_length=255, default='')
+    city = models.CharField(max_length=255, default='', blank=True)
+    destination_country = models.CharField(max_length=255, default='', blank=True)
     body_type = models.PositiveSmallIntegerField(blank=True, null=True)
 
     objects = EndUserManager()
@@ -99,4 +99,5 @@ class Batch(models.Model):
         EndUser, on_delete=models.CASCADE, related_name='batch')
 
     def __str__(self):
+        print(self.batch_name)
         return self.BATCH_CHOICES[self.batch_name][1]

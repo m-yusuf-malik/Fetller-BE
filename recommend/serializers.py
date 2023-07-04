@@ -25,4 +25,11 @@ class DietPlanSerializer(serializers.ModelSerializer):
 class DietPlansSerializer(serializers.ModelSerializer):
     class Meta:
         model = DietPlan
-        fields = ("day", "time", "meal")
+        fields = ("meal", "time", "day",)
+
+
+class CombinedDietPlansSerializer(serializers.Serializer):
+    day = serializers.IntegerField()
+    Breakfast = serializers.CharField()
+    Lunch = serializers.CharField()  
+    Dinner = serializers.CharField()

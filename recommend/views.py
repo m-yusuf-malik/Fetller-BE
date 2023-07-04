@@ -18,10 +18,13 @@ from recommend.serializers import (
     ScheduleSerializer,
     DietPlanSerializer,
     DietPlansSerializer,
+    CombinedDietPlansSerializer,
 )
 from recommend.utils.predict_type import calculate_body_type
 
 from utils.misc import save_diets_from_excel
+
+# from time import sleep
 
 
 class RecommenderAPIView(APIView):
@@ -58,7 +61,9 @@ class RecommenderAPIView(APIView):
                 #         status=status.HTTP_400_BAD_REQUEST,
                 #     )
 
-                body_type, body_model = data
+                body_type = data.get("body_type")
+                body_model = data.get("body_model")
+
                 # print({"body_type": body_type, "body_model": body_model})
 
                 user.body_type = body_type
@@ -102,6 +107,7 @@ class ScheduleAPIVIew(generics.RetrieveUpdateDestroyAPIView):
 
             ser = DietPlanSerializer(diet_plan, many=True)
             sch = self.serializer_class(schedule)
+            # sleep(2)
 
             # should be not
             # if not (cur_time.hour >= 10 and cur_time.hour <= 21):
@@ -136,7 +142,16 @@ class ScheduleAPIVIew(generics.RetrieveUpdateDestroyAPIView):
             day = schedule.current_day
 
             cur_time = timezone.localtime(timezone.now())
-            schedule.critical_day = (cur_time - schedule.updated_at).days
+
+            karachi_offset = timezone.timedelta(hours=0, minutes=10)
+
+            updated_at_utc = schedule.updated_at.replace(tzinfo=timezone.utc)
+            updated_at_karachi = (
+                updated_at_utc.astimezone(timezone.get_current_timezone())
+                + karachi_offset
+            )
+
+            schedule.critical_day = (cur_time - updated_at_karachi).days
             schedule.save()
 
             if schedule.critical_day >= 5:
@@ -144,8 +159,11 @@ class ScheduleAPIVIew(generics.RetrieveUpdateDestroyAPIView):
                 user.score -= 50
 
                 batch = Batch.objects.get(user=user)
-                batch.batch_name = user.score % 100
-                batch.save()
+                if user.score < 400:
+                    batch.batch_name = int(user.score / 100)
+                    batch.save()
+                else:
+                    batch.bat
 
                 user.body_type = None
                 user.save()
@@ -154,7 +172,7 @@ class ScheduleAPIVIew(generics.RetrieveUpdateDestroyAPIView):
                     {
                         "error": "More than 5 days not taking the diet. Failed to complete the diet."
                     },
-                    status=status.HTTP_205_RESET_CONTENT,
+                    status=status.HTTP_410_GONE,
                 )
 
             # Delete schedule if day is 30 - done
@@ -163,21 +181,36 @@ class ScheduleAPIVIew(generics.RetrieveUpdateDestroyAPIView):
                 user.score += 30
 
                 batch = Batch.objects.get(user=user)
-                batch.batch_name = user.score % 100
-                batch.save()
+                if user.score < 400:
+                    batch.batch_name = int(user.score / 100)
+                    batch.save()
+                else:
+                    batch.batch_name = 3
+                    batch.save()
 
                 user.body_type = None
                 user.save()
 
                 return Response(
-                    {"message": "Completed whole diet."},
-                    status=status.HTTP_204_NO_CONTENT,
+                    {"message": "Completed whole diet. Congratz!"},
+                    status=status.HTTP_202_ACCEPTED,
                 )
 
-            # Add day only if its 8pm or more - done
-            if cur_time.hour >= 10 and cur_time.hour <= 21:
+            # Add day only if its 9pm - 10am - done
+            if not (cur_time.hour <= 10 or cur_time.hour >= 21):
                 return Response(
-                    {"error": "Take the whole diet before completing it."},
+                    {
+                        "error": "Take the whole diet before completing it. Come back after 9 P.M."
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            # Check if completed diet only once per day - done
+            if cur_time.day == updated_at_karachi.day:
+                return Response(
+                    {
+                        "error": "You have completed the today's diet. Come back next day."
+                    },
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 
@@ -185,12 +218,16 @@ class ScheduleAPIVIew(generics.RetrieveUpdateDestroyAPIView):
             user.score += 5
 
             batch = Batch.objects.get(user=user)
-            batch.batch_name = int(user.score / 100)
+            if user.score < 400:
+                batch.batch_name = int(user.score / 100)
+                batch.save()
+            else:
+                batch.batch_name = 3
+                batch.save()
 
             schedule.current_day += 1
             schedule.updated_at = cur_time
 
-            batch.save()
             schedule.save()
             user.save()
 
@@ -204,7 +241,7 @@ class ScheduleAPIVIew(generics.RetrieveUpdateDestroyAPIView):
         except Schedule.DoesNotExist:
             return Response(
                 data={"error": "No schedule exits."},
-                status=status.HTTP_400_BAD_REQUEST,
+                status=status.HTTP_403_FORBIDDEN,
             )
 
         except Exception as e:
@@ -234,8 +271,24 @@ class DietPlansAPIView(generics.ListAPIView):
 
             ser = DietPlansSerializer(diet_plan, many=True)
 
+            days_dict = {}
+
+            for meal_plan in ser.data:
+                day, time, meal = meal_plan["day"], meal_plan["time"], meal_plan["meal"]
+
+                if day not in days_dict:
+                    days_dict[day] = {"day": day}
+
+                days_dict[day][time] = meal
+
+            meal_plans = CombinedDietPlansSerializer(
+                list(days_dict.values()), many=True
+            )
+
+            # sleep(2)
+
             return Response(
-                ser.data,
+                meal_plans.data,
                 status=status.HTTP_200_OK,
             )
 
