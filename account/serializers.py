@@ -52,6 +52,7 @@ class RegisterSerializer(ModelSerializer):
 class EndUserSerializer(serializers.ModelSerializer):
     # password = serializers.CharField(max_length=50, write_only=True)
     batch = serializers.CharField(source="batch.__str__")
+    score = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = EndUser

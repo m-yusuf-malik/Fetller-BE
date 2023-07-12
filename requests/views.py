@@ -47,7 +47,8 @@ class RequestListCreateView(generics.ListCreateAPIView):
     def get(self, request):
         try:
             requests = self.get_queryset()
-            requests = requests.filter(is_ordered=False)
+            user = request.user
+            requests = requests.filter(is_ordered=False).exclude(user=user)
             requests = self.filter_with_params(request, requests)
 
             if not requests:
@@ -125,7 +126,7 @@ class OrderView(
             ser.is_valid(raise_exception=True)
             ser.save()
             request.save()
-            rider.is_rider=True
+            rider.is_rider = True
             rider.save()
 
             return response.Response(

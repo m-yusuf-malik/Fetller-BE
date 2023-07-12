@@ -163,7 +163,7 @@ class ScheduleAPIVIew(generics.RetrieveUpdateDestroyAPIView):
                     batch.batch_name = int(user.score / 100)
                     batch.save()
                 else:
-                    batch.bat
+                    batch.batch_name = 3
 
                 user.body_type = None
                 user.save()
