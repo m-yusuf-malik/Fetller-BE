@@ -12,6 +12,7 @@ from requests.serializers import (
     OrderSerializer,
     OrderListSerializer,
     OrderUpdateSerializer,
+    OrderDetailSerializer
 )
 
 
@@ -86,24 +87,38 @@ class OrderView(
     queryset = Order.objects.all()
     renderer_classes = [UserRenderer]
     permission_classes = [IsAuthenticated]
-    lookup_url_kwarg = "req_id"
-    lookup_field = "request"
-
-    def get_queryset(self):
-        req_id = self.kwargs["req_id"]
-        order = Order.objects.filter(request__id=req_id)
-        return order
 
     def get_serializer_class(self):
         if self.request.method == "GET":
             return OrderListSerializer
         elif self.request.method == "POST":
             return OrderSerializer
-        elif self.request.method == "PATCH":
-            return OrderUpdateSerializer
 
-    def post(self, req, req_id):
+    def get(self, request):
         try:
+            user = request.user
+            orders = self.queryset.filter(rider=user)
+            ser = OrderListSerializer(orders, many=True)
+
+            return response.Response(ser.data, status=status.HTTP_200_OK)
+
+        except Order.DoesNotExist:
+            return response.Response(
+                data={"error": "No order found."},
+                status=status.HTTP_204_NO_CONTENT,
+            )
+
+        except Exception as e:
+            return response.Response(
+                data={
+                    "error": ser.errors,
+                },
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+    def post(self, req):
+        try:
+            req_id = req.data.get('request_id')
             request = Request.objects.get(id=req_id)
             request.is_ordered = True
 
@@ -122,7 +137,7 @@ class OrderView(
                 "score": int(request.estimated_profit * 0.25),
             }
 
-            ser = self.serializer_class(data=data)
+            ser = OrderSerializer(data=data)
             ser.is_valid(raise_exception=True)
             ser.save()
             request.save()
@@ -150,5 +165,55 @@ class OrderView(
 
         except Exception as e:
             return response.Response(
-                data={"error": ser.errors}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                data={"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+class OrderUpdateDestroyView(generics.UpdateAPIView, generics.DestroyAPIView, generics.RetrieveAPIView):
+    serializer_class = OrderUpdateSerializer
+    queryset = Order.objects.all()
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
+    # lookup_url_kwarg = "req_id"
+    lookup_field = "id"
+
+    # def get_queryset(self):
+    #     req_id = self.kwargs["req_id"]
+    #     order = Order.objects.filter(request__id=req_id)
+    #     return order
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return OrderDetailSerializer
+        else:
+            return OrderUpdateSerializer
+
+    def destroy(self, req, id):
+        try:
+            order = self.get_queryset().get(id=id)
+            user = req.user
+            request = Request.objects.get(id=order.request.id)
+
+            user.score += order.score
+            
+            user.save()
+            order.delete()
+            request.delete()
+
+            return response.Response(status=status.HTTP_204_NO_CONTENT)
+
+        except Request.DoesNotExist:
+            return response.Response(
+                data={"error": "No request exists."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        except Order.DoesNotExist:
+            return response.Response(
+                data={"error": "No order exists."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        except Exception as e:
+            return response.Response(
+                data={"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )

@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "38d5d5df-d037-4994-a5fd-bc63f802d2b3",
+		"_postman_id": "7dda124a-f632-4106-8237-8e648c0d128c",
 		"name": "Fettler++",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "28244622"
+		"_exporter_id": "26927914"
 	},
 	"item": [
 		{
@@ -43,7 +43,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"yusuf@fettler.com\",\r\n    \"password\": \"1234\"\r\n}",
+					"raw": "// {\r\n//     \"email\": \"yusuf@fettler.com\",\r\n//     \"password\": \"1234\"\r\n// }\r\n\r\n{\r\n    \"email\": \"waf@fettler.com\",\r\n    \"password\": \"1234\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -247,7 +247,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/requests?ordering=-price&country=France",
+					"raw": "http://127.0.0.1:8000/api/requests",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -268,11 +268,13 @@
 						},
 						{
 							"key": "ordering",
-							"value": "-price"
+							"value": "-price",
+							"disabled": true
 						},
 						{
 							"key": "country",
-							"value": "France"
+							"value": "France",
+							"disabled": true
 						}
 					]
 				},
@@ -477,10 +479,9 @@
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "request",
+							"key": "request_id",
 							"value": "8",
-							"type": "default",
-							"disabled": true
+							"type": "default"
 						},
 						{
 							"key": "status",
@@ -491,7 +492,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/requests/4/order",
+					"raw": "http://127.0.0.1:8000/api/orders",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -502,9 +503,7 @@
 					"port": "8000",
 					"path": [
 						"api",
-						"requests",
-						"4",
-						"order"
+						"orders"
 					]
 				}
 			},
@@ -536,7 +535,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/requests/4/order",
+					"raw": "http://127.0.0.1:8000/api/orders",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -547,9 +546,51 @@
 					"port": "8000",
 					"path": [
 						"api",
-						"requests",
-						"4",
-						"order"
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Order Details",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "request",
+							"value": "8",
+							"type": "default",
+							"disabled": true
+						},
+						{
+							"key": "status",
+							"value": "1",
+							"type": "default",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/orders/4",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"orders",
+						"4"
 					]
 				}
 			},
@@ -595,7 +636,7 @@
 					"query": [
 						{
 							"key": "status",
-							"value": null,
+							"value": "",
 							"disabled": true
 						}
 					]
@@ -795,7 +836,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg4Mzk3NjU4LCJpYXQiOjE2ODgzOTA0NTgsImp0aSI6ImEzNWVmNWM0OGQ1OTQ3ZTc5M2MxY2Y2MmM1ZTI1ZjY0IiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJ5dXN1ZiIsImlzX3JpZGVyIjpmYWxzZSwibmFtZSI6IiJ9.a-lltPUfJ89skUejjtVSXkHJ2RRdGoo4mDwjDM9iYCk",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg5MjM5MjE2LCJpYXQiOjE2ODkyMzIwMTYsImp0aSI6ImU5YTUxMjFiY2MyYjRmYmViZjhlMWI4MDEzZmZmMDljIiwidXNlcl9pZCI6MywidXNlcm5hbWUiOiJ3YWYiLCJpc19yaWRlciI6dHJ1ZSwibmFtZSI6IiIsImRlc3RpbmF0aW9uX2NvdW50cnkiOiJJbmRpYSJ9.nQPEuCUSBPKkGhZqaGVdNl5wXtrenAQgAsrYRCuseck",
 				"type": "string"
 			}
 		]

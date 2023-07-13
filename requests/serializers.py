@@ -36,19 +36,43 @@ class OrderSerializer(serializers.ModelSerializer):
 
 
 class OrderListSerializer(serializers.ModelSerializer):
-    status = serializers.CharField(source='__str__')
-    rider = serializers.CharField(source='rider.username', read_only=True)
+    # status = serializers.CharField(source='__str__')
+    status = serializers.IntegerField()
+
+    # rider = serializers.CharField(source='rider.username', read_only=True)
     requestee = serializers.CharField(
         source='requestee.username', read_only=True)
     created_at = serializers.DateTimeField(
-        format='%Y-%m-%d %H:%M:%S', read_only=True)
+        format='%Y-%m-%d', read_only=True)
+    title = serializers.CharField(source='request.title', read_only=True)
+    image = serializers.CharField(source='request.image', read_only=True)
 
     class Meta:
         model = Order
-        fields = '__all__'
+        exclude = ('updated_at', 'request', 'rider')
 
 
 class OrderUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['status']
+
+
+class OrderRequestSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.username', read_only=True)
+
+    class Meta:
+        model = Request
+        fields = ('title', 'description', 'address', 'city', 'phone_number',
+                  'country', 'price', 'estimated_profit', 'user', 'image')
+
+
+class OrderDetailSerializer(serializers.ModelSerializer):
+    status = serializers.IntegerField()
+    created_at = serializers.DateTimeField(
+        format='%Y-%m-%d', read_only=True)
+    request = OrderRequestSerializer()
+
+    class Meta:
+        model = Order
+        fields = ('status', 'score', 'created_at', 'request')

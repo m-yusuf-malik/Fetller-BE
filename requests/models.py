@@ -42,8 +42,8 @@ class Order(models.Model):
     request = models.OneToOneField(
         Request, on_delete=models.CASCADE, related_name="request_order"
     )
-    rider = models.OneToOneField(
-        EndUser, on_delete=models.CASCADE, related_name="rider_order"
+    rider = models.ForeignKey(
+        EndUser, on_delete=models.CASCADE, related_name="rider_orders"
     )
     requestee = models.ForeignKey(
         EndUser, on_delete=models.CASCADE, related_name="user_order"
