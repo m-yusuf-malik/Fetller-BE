@@ -1,4 +1,7 @@
 from django.db.models import Q
+from django.core.mail import send_mail
+
+# from django.conf.settings import EMAIL_HOST_USER
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics, response, status
@@ -12,7 +15,7 @@ from requests.serializers import (
     OrderSerializer,
     OrderListSerializer,
     OrderUpdateSerializer,
-    OrderDetailSerializer
+    OrderDetailSerializer,
 )
 
 
@@ -118,7 +121,7 @@ class OrderView(
 
     def post(self, req):
         try:
-            req_id = req.data.get('request_id')
+            req_id = req.data.get("request_id")
             request = Request.objects.get(id=req_id)
             request.is_ordered = True
 
@@ -169,7 +172,9 @@ class OrderView(
             )
 
 
-class OrderUpdateDestroyView(generics.UpdateAPIView, generics.DestroyAPIView, generics.RetrieveAPIView):
+class OrderUpdateDestroyView(
+    generics.UpdateAPIView, generics.DestroyAPIView, generics.RetrieveAPIView
+):
     serializer_class = OrderUpdateSerializer
     queryset = Order.objects.all()
     renderer_classes = [UserRenderer]
@@ -194,7 +199,25 @@ class OrderUpdateDestroyView(generics.UpdateAPIView, generics.DestroyAPIView, ge
             request = Request.objects.get(id=order.request.id)
 
             user.score += order.score
+
+            message = f"Congratulation, {user.username}, you have completed your order."
+            send_mail(
+                "Order Status",
+                message,
+                "fettlerplus@gmail.com",
+                [user.email],
+                fail_silently=True,
+            )            
             
+            message = f"Congratulation, {request.user.username}, your order have been completed by {user.username}."
+            send_mail(
+                "Order Status",
+                message,
+                "fettlerplus@gmail.com",
+                [request.user.email],
+                fail_silently=True,
+            )
+
             user.save()
             order.delete()
             request.delete()
@@ -212,6 +235,33 @@ class OrderUpdateDestroyView(generics.UpdateAPIView, generics.DestroyAPIView, ge
                 data={"error": "No order exists."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
+        except Exception as e:
+            return response.Response(
+                data={"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+    def patch(self, req, id):
+        try:
+            order_status = req.data.get("status")
+
+            order = self.get_queryset().get(id=id)
+            rider = req.user
+            request = Request.objects.get(id=order.request.id)
+
+            order.status = order_status
+            order.save()
+
+            message = f"{rider.username} has updated the status of your {request.title}'s request order."
+            send_mail(
+                "Order Status",
+                message,
+                "fettlerplus@gmail.com",
+                [request.user.email],
+                fail_silently=True,
+            )
+
+            return response.Response(status=status.HTTP_200_OK)
 
         except Exception as e:
             return response.Response(
