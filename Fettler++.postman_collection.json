@@ -43,7 +43,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "// {\r\n//     \"email\": \"yusuf@fettler.com\",\r\n//     \"password\": \"1234\"\r\n// }\r\n\r\n{\r\n    \"email\": \"waf@fettler.com\",\r\n    \"password\": \"1234\"\r\n}",
+					"raw": "{\r\n    \"email\": \"yousafking61@gmail.com\",\r\n    \"password\": \"1234\"\r\n}\r\n\r\n// {\r\n//     \"email\": \"waf@fettler.com\",\r\n//     \"password\": \"1234\"\r\n// }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -836,7 +836,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg5MjM5MjE2LCJpYXQiOjE2ODkyMzIwMTYsImp0aSI6ImU5YTUxMjFiY2MyYjRmYmViZjhlMWI4MDEzZmZmMDljIiwidXNlcl9pZCI6MywidXNlcm5hbWUiOiJ3YWYiLCJpc19yaWRlciI6dHJ1ZSwibmFtZSI6IiIsImRlc3RpbmF0aW9uX2NvdW50cnkiOiJJbmRpYSJ9.nQPEuCUSBPKkGhZqaGVdNl5wXtrenAQgAsrYRCuseck",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg5NDgwMDI2LCJpYXQiOjE2ODk0NzI4MjYsImp0aSI6ImQ0OWViZmE2ODQyYjQ1OWE4Yjg5NmYzODIzNDc1YmQ0IiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJ5dXN1ZiIsImlzX3JpZGVyIjpmYWxzZSwibmFtZSI6IiIsImRlc3RpbmF0aW9uX2NvdW50cnkiOiIifQ.Av-_qa7WC9LxbcaPJx90ReqJd-OUYLb14GjGtoubWyQ",
 				"type": "string"
 			}
 		]

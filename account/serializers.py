@@ -51,7 +51,7 @@ class RegisterSerializer(ModelSerializer):
 
 class EndUserSerializer(serializers.ModelSerializer):
     # password = serializers.CharField(max_length=50, write_only=True)
-    batch = serializers.CharField(source="batch.__str__")
+    batch_name = serializers.IntegerField(source="batch.batch_name", read_only=True)
     score = serializers.IntegerField(read_only=True)
 
     class Meta:
@@ -64,7 +64,7 @@ class EndUserSerializer(serializers.ModelSerializer):
             "country",
             "city",
             "score",
-            "batch",
+            "batch_name",
             "destination_country",
         ]
 
@@ -74,7 +74,7 @@ class EndUserSerializer(serializers.ModelSerializer):
 
 
 class BatchRetrieveSerializer(serializers.ModelSerializer):
-    batch_name = serializers.CharField(source="__str__", read_only=True)
+    batch_name = serializers.IntegerField(read_only=True)
     user = serializers.CharField(source="user.username", read_only=True)
 
     class Meta:
