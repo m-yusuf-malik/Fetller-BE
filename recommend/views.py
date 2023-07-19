@@ -55,16 +55,8 @@ class RecommenderAPIView(APIView):
                         status=status.HTTP_400_BAD_REQUEST,
                     )
 
-                # if "error" in data.keys():
-                #     return Response(
-                #         {"error": data.get("error")},
-                #         status=status.HTTP_400_BAD_REQUEST,
-                #     )
-
                 body_type = data.get("body_type")
                 body_model = data.get("body_model")
-
-                # print({"body_type": body_type, "body_model": body_model})
 
                 user.body_type = body_type
                 Schedule.objects.create(user=user)
@@ -151,7 +143,7 @@ class ScheduleAPIVIew(generics.RetrieveUpdateDestroyAPIView):
                 + karachi_offset
             )
 
-            schedule.critical_day = (cur_time - updated_at_karachi).days
+            schedule.critical_day = max(0, (cur_time - updated_at_karachi).days)
             schedule.save()
 
             if schedule.critical_day >= 5:
