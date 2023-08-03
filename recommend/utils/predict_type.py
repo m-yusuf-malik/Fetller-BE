@@ -18,12 +18,15 @@ NMS_THRESHOLD = 0.3
 FOCAL_PERSON = 2652.75
 
 
+# Loading the pre-trianed YOLOv8 model
 def load_model():
     # Check if the model is already cached
     model = cache.get("model")
     if model is None:
-        # model_path = os.path.join(settings.BASE_DIR,'recommend','utils', 'assets', 'yolov8n.pt')
-        model = YOLO("../assets/yolov8n.pt", task="detect")
+        model_path = os.path.join(
+            settings.BASE_DIR, "recommend", "utils", "assets", "yolov8n.pt"
+        )
+        model = YOLO(model_path, task="detect")
 
         # Cache the model
         cache.set("model", model)
@@ -31,7 +34,6 @@ def load_model():
     return model
 
 
-# Loading the pre-trianed YOLOv8 model
 # object detector funciton/method
 def object_detector(image):
     model = load_model()
@@ -60,21 +62,6 @@ def object_detector(image):
 
     return {"error": "Image is not of a person"}
 
-    # for classid, extra in zip(classes, extras):
-    #     if classid == 0:  # person class id
-    #         width_in_px, height_in_px = extra[2], extra[3]
-
-    #         # returning the data
-    #         # 1: object width in pixels, 2: object width in pixels, 3: position where have to draw text(distance)
-    #         return {
-    #             "width": width_in_px,
-    #             "heigth": height_in_px,
-    #         }
-    #     else:
-    #         return {"error": "Image is not of a person"}
-
-    # return {"error": "Image does not contain any object"}
-
 
 # distance finder function
 def distance_finder(focal_length, real_object_width, width_in_frmae):
@@ -83,11 +70,6 @@ def distance_finder(focal_length, real_object_width, width_in_frmae):
 
 
 def calculate_body_type(img):
-    # reading the reference image from dir
-    # Shape (3, 640, 640)
-    # img = cv.imread(img_path)
-    # img = img.resize((640, 640), refcheck=False)
-
     data = object_detector(img)
 
     if "error" in data.keys():
@@ -103,8 +85,8 @@ def calculate_body_type(img):
     fin_width = (width * TO_CM) + (distance - 50) * 1.5
 
     # fin_weight = (fin_heigth*fin_width*(fin_width*0.15))/1000
-
     # bmi = fin_weight / ((fin_heigth/100) ** 2)
+
     body_model = (fin_width * fin_heigth) / 100
 
     body_type = 0

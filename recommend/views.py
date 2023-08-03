@@ -5,7 +5,6 @@ from django.utils import timezone
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework import status
@@ -24,11 +23,8 @@ from recommend.utils.predict_type import calculate_body_type
 
 from utils.misc import save_diets_from_excel
 
-# from time import sleep
-
 
 class RecommenderAPIView(APIView):
-    # parser_classes = (MultiPartParser,)
     permission_classes = [IsAuthenticated]
 
     def post(self, request, format=None):
@@ -99,14 +95,6 @@ class ScheduleAPIVIew(generics.RetrieveUpdateDestroyAPIView):
 
             ser = DietPlanSerializer(diet_plan, many=True)
             sch = self.serializer_class(schedule)
-            # sleep(2)
-
-            # should be not
-            # if not (cur_time.hour >= 10 and cur_time.hour <= 21):
-            #     return Response(
-            #         {"error": "Wait untill 10 A.M."},
-            #         status=status.HTTP_400_BAD_REQUEST,
-            #     )
 
             return Response(
                 {"diet": ser.data, "schedule": sch.data},
@@ -276,8 +264,6 @@ class DietPlansAPIView(generics.ListAPIView):
             meal_plans = CombinedDietPlansSerializer(
                 list(days_dict.values()), many=True
             )
-
-            # sleep(2)
 
             return Response(
                 meal_plans.data,
