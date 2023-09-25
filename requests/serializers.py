@@ -35,6 +35,7 @@ class OrderSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+# Serializer for lisitng all the available orders for a specifc user
 class OrderListSerializer(serializers.ModelSerializer):
     # status = serializers.CharField(source='__str__')
     status = serializers.IntegerField()
